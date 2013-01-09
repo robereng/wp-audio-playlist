@@ -55,6 +55,7 @@ if ( post_password_required() )
 
 	<?php endif; // have_comments() ?>
 
-	<?php comment_form(); ?>
+	<?php $form_args = array( 'title_reply' => 'Leave feedback', 'comment_notes_after' => "" ); 
+	comment_form($form_args); ?>
 
 </div><!-- #comments .comments-area -->

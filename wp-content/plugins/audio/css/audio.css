@@ -562,6 +562,11 @@ div.jp-video-play:hover a.jp-video-play-icon {
 	background: url("images/jplayer.morning.light.video.play.png") 0 -100px no-repeat;
 }
 
+div.rateit {
+float:right;
+margin-right:5px;
+}
+
 
 
 

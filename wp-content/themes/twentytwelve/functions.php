@@ -474,3 +474,11 @@ function register_rc() { // A unique name for our function
 	);
 	register_post_type( 'playlist', $args ); // Create the post type, use options above
 }
+
+add_filter('comment_form_default_fields', 'url_filtered');
+function url_filtered($fields)
+{
+	if(isset($fields['url']))
+		unset($fields['url']);
+	return $fields;
+}

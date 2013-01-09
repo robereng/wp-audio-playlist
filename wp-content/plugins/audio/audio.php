@@ -43,6 +43,7 @@ class Audio_WP_Plugin {
 				wp_enqueue_style( 'audio-override', get_stylesheet_directory_uri() . '/audio.css' );
 			} else {
 				wp_enqueue_style( 'audio', WP_PLUGIN_URL . '/audio/css/audio.css' );
+				wp_enqueue_style( 'rateit', WP_PLUGIN_URL . '/audio/css/rateit.css' );
 			}
 		}
 	}
@@ -51,7 +52,8 @@ class Audio_WP_Plugin {
 		if ( !is_admin() ) {
 			wp_enqueue_script( 'base64',    WP_PLUGIN_URL . '/audio/js/base64.js', '', '', true );
 			wp_enqueue_script( 'jplayer',   WP_PLUGIN_URL . '/audio/js/jquery.jplayer.min.js', array( 'jquery' ), '', true );
-			wp_enqueue_script( 'jplaylist', WP_PLUGIN_URL . '/audio/js/jplayer.playlist.min.js', array( 'jplayer'), '', true );
+			wp_enqueue_script( 'jplaylist', WP_PLUGIN_URL . '/audio/js/jplayer.playlist.js', array( 'jplayer'), '', true );
+			wp_enqueue_script( 'rateit',    WP_PLUGIN_URL . '/audio/js/jquery.rateit.js', array( 'jplaylist'), '', true );
 			wp_enqueue_script( 'audio',     WP_PLUGIN_URL . '/audio/js/audio.js', array( 'jplayer', 'base64' ), '', true );
 		}
 	}
