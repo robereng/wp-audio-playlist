@@ -78,7 +78,7 @@ var AudioPlayer = (function ($) {
 			jPlayer: "#jquery_jplayer_1",
 			cssSelectorAncestor: "#jp_container_1"},
 			mp3Items,{
-			swfPath: 'http://' + window.location.host + '/wp-content/plugins/audio/js/jplayer-02272012.swf',
+			swfPath: 'http://' + window.location.host + '/soundloungesite/wp-content/plugins/audio-playlist/js/jplayer-02272012.swf',
 			oggSupport: false,
 			supplied: 'mp3',
 			wmode: "window",

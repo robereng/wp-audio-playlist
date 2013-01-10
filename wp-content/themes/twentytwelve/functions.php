@@ -448,37 +448,3 @@ function twentytwelve_customize_preview_js() {
 	wp_enqueue_script( 'twentytwelve-customizer', get_template_directory_uri() . '/js/theme-customizer.js', array( 'customize-preview' ), '20120827', true );
 }
 add_action( 'customize_preview_init', 'twentytwelve_customize_preview_js' );
-
-add_action('init', 'register_rc', 1); // Set priority to avoid plugin conflicts
-
-function register_rc() { // A unique name for our function
- 	$labels = array( // Used in the WordPress admin
-		'name' => _x('Playlists', 'post type general name'),
-		'singular_name' => _x('Playlist', 'post type singular name'),
-		'add_new' => _x('Add New', 'Playlist'),
-		'add_new_item' => __('Add New Playlist'),
-		'edit_item' => __('Edit Playlist'),
-		'new_item' => __('New Playlist'),
-		'view_item' => __('View Playlist'),
-		'search_items' => __('Search Playlists'),
-		'not_found' =>  __('Nothing found'),
-		'not_found_in_trash' => __('Nothing found in Trash')
-	);
-	$args = array(
-		'labels' => $labels, // Set above
-		'public' => true, // Make it publicly accessible
-		'hierarchical' => false, // No parents and children here
-		'menu_position' => 5, // Appear right below "Posts"
-		'has_archive' => 'playlists', // Activate the archive
-		'supports' => array('title','editor','comments','thumbnail','custom-fields'),
-	);
-	register_post_type( 'playlist', $args ); // Create the post type, use options above
-}
-
-add_filter('comment_form_default_fields', 'url_filtered');
-function url_filtered($fields)
-{
-	if(isset($fields['url']))
-		unset($fields['url']);
-	return $fields;
-}

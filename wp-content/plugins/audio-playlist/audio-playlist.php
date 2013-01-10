@@ -9,6 +9,54 @@ License: GPLv2 or later
 define( 'A_THUMB_WIDTH',    50 );
 define( 'A_THUMB_HEIGHT',   50 );
 
+add_action('init', 'register_rc', 1); // Set priority to avoid plugin conflicts
+
+function register_rc() { // A unique name for our function
+ 	$labels = array( // Used in the WordPress admin
+		'name' => _x('Playlists', 'post type general name'),
+		'singular_name' => _x('Playlist', 'post type singular name'),
+		'add_new' => _x('Add New', 'Playlist'),
+		'add_new_item' => __('Add New Playlist'),
+		'edit_item' => __('Edit Playlist'),
+		'new_item' => __('New Playlist'),
+		'view_item' => __('View Playlist'),
+		'search_items' => __('Search Playlists'),
+		'not_found' =>  __('Nothing found'),
+		'not_found_in_trash' => __('Nothing found in Trash')
+	);
+	$args = array(
+		'labels' => $labels, // Set above
+		'public' => true, // Make it publicly accessible
+		'hierarchical' => false, // No parents and children here
+		'menu_position' => 5, // Appear right below "Posts"
+		'has_archive' => 'playlists', // Activate the archive
+		'supports' => array('title','editor','comments','thumbnail','custom-fields'),
+	);
+	register_post_type( 'playlist', $args ); // Create the post type, use options above
+}
+
+add_filter('comment_form_default_fields', 'url_filtered');
+function url_filtered($fields)
+{
+	if(isset($fields['url']))
+		unset($fields['url']);
+	return $fields;
+}
+
+// Styling for the custom post type icon
+add_action( 'admin_head', 'audio_icons' );
+function audio_icons() {
+    ?>
+    <style type="text/css" media="screen">
+        #menu-posts-playlist .wp-menu-image {
+            background: url(<?php bloginfo('template_url') ?>/images/blue-document-music-playlist.png) no-repeat 6px -17px !important;
+        }
+    	#menu-posts-playlist:hover .wp-menu-image, #menu-posts-playlist.wp-has-current-submenu .wp-menu-image {
+            background-position:6px 7px !important;
+        }
+    </style>
+<?php }
+
 class Audio_WP_Plugin {
 	function init() {
 		add_action( 'init', 			array( $this, 'shortcodes' ) );
@@ -42,19 +90,19 @@ class Audio_WP_Plugin {
 			if ( is_file( $local ) ) {
 				wp_enqueue_style( 'audio-override', get_stylesheet_directory_uri() . '/audio.css' );
 			} else {
-				wp_enqueue_style( 'audio', WP_PLUGIN_URL . '/audio/css/audio.css' );
-				wp_enqueue_style( 'rateit', WP_PLUGIN_URL . '/audio/css/rateit.css' );
+				wp_enqueue_style( 'audio', WP_PLUGIN_URL . '/audio-playlist/css/audio-playlist.css' );
+				wp_enqueue_style( 'rateit', WP_PLUGIN_URL . '/audio-playlist/css/rateit.css' );
 			}
 		}
 	}
 
 	function scripts() {
 		if ( !is_admin() ) {
-			wp_enqueue_script( 'base64',    WP_PLUGIN_URL . '/audio/js/base64.js', '', '', true );
-			wp_enqueue_script( 'jplayer',   WP_PLUGIN_URL . '/audio/js/jquery.jplayer.min.js', array( 'jquery' ), '', true );
-			wp_enqueue_script( 'jplaylist', WP_PLUGIN_URL . '/audio/js/jplayer.playlist.js', array( 'jplayer'), '', true );
-			wp_enqueue_script( 'rateit',    WP_PLUGIN_URL . '/audio/js/jquery.rateit.js', array( 'jplaylist'), '', true );
-			wp_enqueue_script( 'audio',     WP_PLUGIN_URL . '/audio/js/audio.js', array( 'jplayer', 'base64' ), '', true );
+			wp_enqueue_script( 'base64',    WP_PLUGIN_URL . '/audio-playlist/js/base64.js');
+			wp_enqueue_script( 'jplayer',   WP_PLUGIN_URL . '/audio-playlist/js/jquery.jplayer.min.js');
+			wp_enqueue_script( 'jplaylist', WP_PLUGIN_URL . '/audio-playlist/js/jplayer.playlist.js');
+			wp_enqueue_script( 'rateit',    WP_PLUGIN_URL . '/audio-playlist/js/jquery.rateit.js');
+			wp_enqueue_script( 'audio',     WP_PLUGIN_URL . '/audio-playlist/js/audio-playlist.js');
 		}
 	}
 
